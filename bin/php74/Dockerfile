@@ -4,6 +4,7 @@ FROM php:7.4.2-apache-buster
 # https://github.com/moby/moby/issues/4032#issuecomment-192327844
  
 ARG DEBIAN_FRONTEND=noninteractive
+ARG apache_uid=33
 
 RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
     sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list && \
@@ -92,3 +93,6 @@ RUN a2enmod rewrite headers
 
 # Cleanup
 RUN rm -rf /usr/src/*
+
+# change www-data uid to current host user
+RUN usermod -u ${apache_uid} www-data

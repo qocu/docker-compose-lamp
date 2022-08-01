@@ -7,6 +7,7 @@ FROM php:7.2-apache-stretch
 #https://github.com/moby/moby/issues/4032#issuecomment-192327844
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG apache_uid=33
 
 # Fix the source.list for stretch
 RUN printf "deb http://archive.debian.org/debian/ stretch main\n" > /etc/apt/sources.list && \
@@ -67,3 +68,6 @@ RUN a2enmod ssl && a2enmod rewrite
 
 # Enable apache modules
 RUN a2enmod rewrite headers
+
+# change www-data uid to current host user
+RUN usermod -u ${apache_uid} www-data

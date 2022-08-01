@@ -2,8 +2,9 @@ FROM php:7.3-apache-stretch
 
 # Surpresses debconf complaints of trying to install apt packages interactively
 # https://github.com/moby/moby/issues/4032#issuecomment-192327844
- 
+
 ARG DEBIAN_FRONTEND=noninteractive
+ARG apache_uid=33
 
 # Remove the old sources.list file.
 RUN rm /etc/apt/sources.list
@@ -25,7 +26,7 @@ RUN apt-get -y update --fix-missing && \
 RUN apt-get -y update && \
     apt-get -y --no-install-recommends install nano wget dialog libsqlite3-dev libsqlite3-0 && \
     apt-get -y --no-install-recommends install mysql-client zlib1g-dev libzip-dev libicu-dev && \
-    apt-get -y --no-install-recommends install --fix-missing apt-utils build-essential git curl && \ 
+    apt-get -y --no-install-recommends install --fix-missing apt-utils build-essential git curl && \
     apt-get -y --no-install-recommends install --fix-missing libcurl3 libcurl3-dev zip openssl && \
     rm -rf /var/lib/apt/lists/* && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -70,3 +71,7 @@ RUN a2enmod rewrite headers
 
 # Cleanup
 RUN rm -rf /usr/src/*
+
+# change www-data uid to current host user
+
+RUN usermod -u ${apache_uid} www-data
