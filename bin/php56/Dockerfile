@@ -1,5 +1,7 @@
 FROM php:5.6-apache
 
+ARG uid=33
+
 RUN apt-get -y update && apt-get upgrade -y
 
 # Install tools && libraries
@@ -36,6 +38,9 @@ RUN a2enmod ssl && a2enmod rewrite
 
 # Enable apache modules
 RUN a2enmod rewrite headers
+
+# change www-data uid to current host user
+RUN usermod -u ${uid} www-data
 
 EXPOSE 80
 EXPOSE 443

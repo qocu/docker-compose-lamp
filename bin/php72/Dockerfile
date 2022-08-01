@@ -2,11 +2,13 @@
 #https://github.com/docker-library/php/issues/865
 
 FROM php:7.2-apache-stretch
+ARG uid=33
 
 #Surpresses debconf complaints of trying to install apt packages interactively
 #https://github.com/moby/moby/issues/4032#issuecomment-192327844
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG uid=33
 
 RUN apt-get -y update --fix-missing --no-install-recommends
 RUN apt-get -y upgrade
@@ -60,3 +62,6 @@ RUN a2enmod ssl && a2enmod rewrite
 
 # Enable apache modules
 RUN a2enmod rewrite headers
+
+# change www-data uid to current host user
+RUN usermod -u ${uid} www-data
