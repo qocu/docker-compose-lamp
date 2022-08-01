@@ -4,6 +4,7 @@ FROM php:7.3-apache-stretch
 # https://github.com/moby/moby/issues/4032#issuecomment-192327844
  
 ARG DEBIAN_FRONTEND=noninteractive
+ARG uid=33
 
 # Update
 RUN apt-get -y update --fix-missing && \
@@ -61,3 +62,6 @@ RUN a2enmod rewrite headers
 
 # Cleanup
 RUN rm -rf /usr/src/*
+
+# change www-data uid to current host user
+RUN usermod -u ${uid} www-data

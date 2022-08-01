@@ -1,5 +1,7 @@
 FROM php:7.1.20-apache
 
+ARG uid=33
+
 RUN apt-get -y update --fix-missing
 RUN apt-get upgrade -y
 
@@ -51,3 +53,6 @@ RUN a2enmod ssl && a2enmod rewrite
 
 # Enable apache modules
 RUN a2enmod rewrite headers
+
+# change www-data uid to current host user
+RUN usermod -u ${uid} www-data
