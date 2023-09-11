@@ -5,7 +5,7 @@ services:
     build:
       context: ./bin/${PHPVERSION}
       args:
-        uid: ${UID}
+        apache_uid: ${UID}
     container_name: "${COMPOSE_PROJECT_NAME}-${PHPVERSION}"
     restart: "always"
     ports:

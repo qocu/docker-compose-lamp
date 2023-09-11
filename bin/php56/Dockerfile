@@ -1,6 +1,6 @@
 FROM php:5.6-apache
 
-ARG uid=33
+ARG apache_uid=33
 
 # Backup and clean source.list file
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.old && \
@@ -51,7 +51,7 @@ RUN a2enmod ssl && a2enmod rewrite
 RUN a2enmod rewrite headers
 
 # change www-data uid to current host user
-RUN usermod -u ${uid} www-data
+RUN usermod -u ${apache_uid} www-data
 
 EXPOSE 80
 EXPOSE 443

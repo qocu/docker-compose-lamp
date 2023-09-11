@@ -4,7 +4,7 @@ FROM php:8.0.19-apache-buster
 # https://github.com/moby/moby/issues/4032#issuecomment-192327844
  
 ARG DEBIAN_FRONTEND=noninteractive
-ARG uid=33
+ARG apache_uid=33
 
 # Update
 RUN apt-get -y update --fix-missing && \
@@ -105,4 +105,4 @@ RUN a2enmod rewrite headers
 RUN rm -rf /usr/src/*
 
 # change www-data uid to current host user
-RUN usermod -u ${uid} www-data
+RUN usermod -u ${apache_uid} www-data
